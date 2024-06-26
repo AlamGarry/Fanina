@@ -6,11 +6,13 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { styles } from '../theme/index';
 import TrendingMovies from '../components/TrendingMovies';
 import MovieList from '../components/MovieList';
+import { useNavigation } from '@react-navigation/native';
 
 export default function HomeScreen() {
   const [trending, setTrending] = useState([1, 2, 3]);
   const [upcoming, setUpcoming] = useState([1, 2, 3]);
   const [topRated, setTopRated] = useState([1, 2, 3]);
+  const navigation = useNavigation();
 
   return (
     <View className='flex-1 bg-stone-900'>
@@ -22,7 +24,7 @@ export default function HomeScreen() {
           <Text className='text-white text-3xl font-bold'>
             <Text style={styles.text}>M</Text>Flix
           </Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Search')}>
             <Ionicons name='search-outline' size={30} color='white' />
           </TouchableOpacity>
         </View>
