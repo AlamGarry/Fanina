@@ -5,9 +5,12 @@ import { StatusBar } from 'expo-status-bar';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { styles } from '../theme/index';
 import TrendingMovies from '../components/TrendingMovies';
+import MovieList from '../components/MovieList';
 
 export default function HomeScreen() {
   const [trending, setTrending] = useState([1, 2, 3]);
+  const [upcoming, setUpcoming] = useState([1, 2, 3]);
+  const [topRated, setTopRated] = useState([1, 2, 3]);
   return (
     <View className='flex-1 bg-stone-900'>
       {/* logo */}
@@ -28,7 +31,11 @@ export default function HomeScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 10 }}
       >
+        {/* Trending Carousel */}
         <TrendingMovies data={trending} />
+
+        {/* Upcoming Row */}
+        <MovieList title='Upcoming' data={upcoming} />
       </ScrollView>
     </View>
   );
