@@ -4,6 +4,7 @@ import {
   TouchableOpacity,
   Dimensions,
   Image,
+  Text,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -11,6 +12,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { styles, theme } from '../theme';
 import { LinearGradient } from 'expo-linear-gradient';
+import Cast from '../components/cast';
+import MovieList from '../components/MovieList';
 
 const { width, height } = Dimensions.get('window');
 
@@ -18,7 +21,11 @@ export default function MovieScreen() {
   const { params: item } = useRoute();
   const navigation = useNavigation();
   const [isFavorite, toggleFavorite] = useState(false);
+  const [cast, setCast] = useState([1, 2, 3, 4, 5]);
+  const [similarMovies, setSimilarMovies] = useState([1, 2, 3, 4, 5]);
   useEffect(() => {}, [item]);
+  let movieName = 'Super Power Like Mushroom';
+
   return (
     <ScrollView
       contentContainerStyle={{ paddingBottom: 20 }}
@@ -54,7 +61,48 @@ export default function MovieScreen() {
             className='absolute bottom-0'
           />
         </View>
+
+        {/* Movie Details */}
+        <View style={{ marginTop: -(height * 0.09) }} className='space-y-3'>
+          {/* title */}
+          <Text className='text-white text-center text-3xl font-bold tracking-wider'>
+            {movieName}
+          </Text>
+          {/* status, release, runtime */}
+          <Text className='text-neutral-400 text-center font-semibold text-base'>
+            Release 2020 170 min
+          </Text>
+          {/* genres */}
+          <View className='flex-row justify-center mx-4 space-x-2'>
+            <Text className='text-neutral-400 text-center font-semibold text-base'>
+              Action
+            </Text>
+            <Text className='text-neutral-400 text-center font-semibold text-base'>
+              Adventure
+            </Text>
+            <Text className='text-neutral-400 text-center font-semibold text-base'>
+              Thriller
+            </Text>
+          </View>
+          {/* description */}
+        </View>
+        <Text className='text-neutral-400 mx-4 tracking-wide'>
+          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem
+          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem
+          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem
+          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem
+        </Text>
       </View>
+
+      {/* cast */}
+      <Cast navigation={navigation} cast={cast} />
+
+      {/* Similar Movies */}
+      <MovieList
+        title='Similar Movies'
+        hideSeeAll={true}
+        data={similarMovies}
+      />
     </ScrollView>
   );
 }

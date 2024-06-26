@@ -11,6 +11,7 @@ export default function HomeScreen() {
   const [trending, setTrending] = useState([1, 2, 3]);
   const [upcoming, setUpcoming] = useState([1, 2, 3]);
   const [topRated, setTopRated] = useState([1, 2, 3]);
+
   return (
     <View className='flex-1 bg-stone-900'>
       {/* logo */}
