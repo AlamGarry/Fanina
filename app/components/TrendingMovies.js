@@ -13,11 +13,11 @@ const { width, height } = Dimensions.get('window');
 
 export default function TrendingMovies({ data }) {
   const navigation = useNavigation();
-  const handleClick = () => {
+  const handleClick = (item) => {
     navigation.navigate('Movie', item);
   };
   return (
-    <View className='mb-8'>
+    <View className='mb-8 mt-2'>
       <Text className='text-white text-xl mx-4 mb-5'>Trending</Text>
       <Carousel
         data={data}
@@ -34,9 +34,9 @@ export default function TrendingMovies({ data }) {
   );
 }
 
-const MovieCard = ({ item }) => {
+const MovieCard = ({ item, handleClick }) => {
   return (
-    <TouchableWithoutFeedback>
+    <TouchableWithoutFeedback onPress={() => handleClick(item)}>
       <Image
         source={require('../../assets/test.jpg')}
         style={{ width: width * 0.6, height: height * 0.4 }}

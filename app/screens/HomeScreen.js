@@ -14,12 +14,12 @@ export default function HomeScreen() {
   return (
     <View className='flex-1 bg-stone-900'>
       {/* logo */}
-      <SafeAreaView>
+      <SafeAreaView className='mt-2'>
         <StatusBar style='light' />
         <View className='flex-row justify-between items-center mx-4'>
           <Ionicons name='menu' size={30} color='white' />
           <Text className='text-white text-3xl font-bold'>
-            <Text style={styles.text}>M</Text>oviesj
+            <Text style={styles.text}>M</Text>Flix
           </Text>
           <TouchableOpacity>
             <Ionicons name='search-outline' size={30} color='white' />
@@ -36,6 +36,9 @@ export default function HomeScreen() {
 
         {/* Upcoming Row */}
         <MovieList title='Upcoming' data={upcoming} />
+
+        {/* Top Rated Row */}
+        <MovieList title='Top Rated' data={topRated} />
       </ScrollView>
     </View>
   );
