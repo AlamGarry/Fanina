@@ -31,7 +31,9 @@ export default function MovieScreen() {
       contentContainerStyle={{ paddingBottom: 20 }}
       className='flex-1 bg-neutral-900'
     >
+      {/* Header */}
       <View className='w-full '>
+        {/* back button and favorite */}
         <SafeAreaView className='absolute z-20 w-full flex-row justify-between items-center px-4 mt-2'>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
