@@ -56,7 +56,7 @@ export default function HomeScreen() {
         <View className='flex-row justify-between items-center mx-4'>
           <Ionicons name='menu' size={30} color='white' />
           <Text className='text-white text-3xl font-bold'>
-            <Text style={styles.text}>M</Text>Flix
+            <Text style={styles.text}>MFlix</Text>
           </Text>
           <TouchableOpacity onPress={() => navigation.navigate('Search')}>
             <Ionicons name='search-outline' size={30} color='white' />
