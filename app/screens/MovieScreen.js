@@ -15,6 +15,13 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Cast from '../components/cast';
 import MovieList from '../components/MovieList';
 import Loading from '../components/loading';
+import {
+  fallbackMoviePoster,
+  fetchMovieCredits,
+  fetchMovieDetails,
+  fetchSimilarMovies,
+  image500,
+} from '../api/moviedb';
 
 const { width, height } = Dimensions.get('window');
 
@@ -22,10 +29,38 @@ export default function MovieScreen() {
   const { params: item } = useRoute();
   const navigation = useNavigation();
   const [isFavorite, toggleFavorite] = useState(false);
-  const [cast, setCast] = useState([1, 2, 3, 4, 5]);
-  const [similarMovies, setSimilarMovies] = useState([1, 2, 3, 4, 5]);
+  const [cast, setCast] = useState([]);
+  const [similarMovies, setSimilarMovies] = useState([]);
   const [loading, setLoading] = useState(false);
-  useEffect(() => {}, [item]);
+  const [movie, setMovie] = useState({});
+
+  useEffect(() => {
+    // console.log('itemid: ', item.id);
+    setLoading(true);
+    getMovieDetails(item.id);
+    getMovieCredits(item.id);
+    getSimilarMovies(item.id);
+  }, [item]);
+
+  const getMovieDetails = async (id) => {
+    const data = await fetchMovieDetails(id);
+    // console.log('got movie details: ', data);
+    if (data) setMovie(data);
+    setLoading(false);
+  };
+
+  const getMovieCredits = async (id) => {
+    const data = await fetchMovieCredits(id);
+    console.log('got credits: ', data);
+    if (data && data.cast) setCast(data.cast);
+  };
+
+  const getSimilarMovies = async (id) => {
+    const data = await fetchSimilarMovies(id);
+    // console.log('got similar movies: ', data);
+    if (data && data.results) setSimilarMovies(data.results);
+  };
+
   let movieName = 'Super Power Like Mushroom';
 
   return (
@@ -57,7 +92,10 @@ export default function MovieScreen() {
         ) : (
           <View>
             <Image
-              source={require('../../assets/test.jpg')}
+              //   source={require('../../assets/test.jpg')}
+              source={{
+                uri: image500(movie?.poster_path) || fallbackMoviePoster,
+              }}
               style={{ width, height: height * 0.55 }}
             />
             <LinearGradient
@@ -74,15 +112,30 @@ export default function MovieScreen() {
         <View style={{ marginTop: -(height * 0.09) }} className='space-y-3'>
           {/* title */}
           <Text className='text-white text-center text-3xl font-bold tracking-wider'>
-            {movieName}
+            {movie?.title}
           </Text>
           {/* status, release, runtime */}
-          <Text className='text-neutral-400 text-center font-semibold text-base'>
-            Release 2020 170 min
-          </Text>
+          {movie?.id ? (
+            <Text className='text-neutral-400 text-center font-semibold text-base'>
+              {movie?.status} • {movie?.release_date?.split('-')[0]} •{' '}
+              {movie?.runtime} min
+            </Text>
+          ) : null}
+
           {/* genres */}
           <View className='flex-row justify-center mx-4 space-x-2'>
-            <Text className='text-neutral-400 text-center font-semibold text-base'>
+            {movie?.genres?.map((genre, index) => {
+              const showDot = index + 1 != movie.genres.length;
+              return (
+                <Text
+                  key={index}
+                  className='text-neutral-400 text-center font-semibold text-base'
+                >
+                  {genre?.name} {showDot ? '•' : null}
+                </Text>
+              );
+            })}
+            {/* <Text className='text-neutral-400 text-center font-semibold text-base'>
               Action
             </Text>
             <Text className='text-neutral-400 text-center font-semibold text-base'>
@@ -90,27 +143,24 @@ export default function MovieScreen() {
             </Text>
             <Text className='text-neutral-400 text-center font-semibold text-base'>
               Thriller
-            </Text>
+            </Text> */}
           </View>
           {/* description */}
         </View>
         <Text className='text-neutral-400 mx-4 tracking-wide'>
-          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem
-          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem
-          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem
-          lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem
+          {movie?.overview}
         </Text>
-
-        {/* cast */}
-        <Cast navigation={navigation} cast={cast} />
-
-        {/* Similar Movies */}
-        <MovieList
-          title='Similar Movies'
-          hideSeeAll={true}
-          data={similarMovies}
-        />
       </View>
+
+      {/* cast */}
+      <Cast navigation={navigation} cast={cast} />
+
+      {/* Similar Movies */}
+      <MovieList
+        title='Similar Movies'
+        hideSeeAll={true}
+        data={similarMovies}
+      />
     </ScrollView>
   );
 }
