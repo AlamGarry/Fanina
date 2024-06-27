@@ -33,3 +33,7 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+# constants files
+\!constants!.js
+\app\constants.js

@@ -12,13 +12,15 @@ import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
+import Loading from '../components/loading';
 
 const { width, height } = Dimensions.get('window');
 
 export default function SearchScreen() {
   const navigation = useNavigation();
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState([1, 2, 3]);
   let movieName = 'Super Power Like Mushroom';
+  const [loading, setLoading] = useState(false);
 
   return (
     <SafeAreaView className='bg-neutral-800 flex-1 '>
@@ -38,7 +40,9 @@ export default function SearchScreen() {
 
       {/* results */}
 
-      {results.length > 0 ? (
+      {loading ? (
+        <Loading />
+      ) : results.length > 0 ? (
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingHorizontal: 15 }}

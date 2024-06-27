@@ -7,11 +7,13 @@ import { styles } from '../theme/index';
 import TrendingMovies from '../components/TrendingMovies';
 import MovieList from '../components/MovieList';
 import { useNavigation } from '@react-navigation/native';
+import Loading from '../components/loading';
 
 export default function HomeScreen() {
   const [trending, setTrending] = useState([1, 2, 3]);
   const [upcoming, setUpcoming] = useState([1, 2, 3]);
   const [topRated, setTopRated] = useState([1, 2, 3]);
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
   return (
@@ -30,19 +32,23 @@ export default function HomeScreen() {
         </View>
       </SafeAreaView>
 
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 10 }}
-      >
-        {/* Trending Carousel */}
-        <TrendingMovies data={trending} />
+      {loading ? (
+        <Loading />
+      ) : (
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 10 }}
+        >
+          {/* Trending Carousel */}
+          <TrendingMovies data={trending} />
 
-        {/* Upcoming Row */}
-        <MovieList title='Upcoming' data={upcoming} />
+          {/* Upcoming Row */}
+          <MovieList title='Upcoming' data={upcoming} />
 
-        {/* Top Rated Row */}
-        <MovieList title='Top Rated' data={topRated} />
-      </ScrollView>
+          {/* Top Rated Row */}
+          <MovieList title='Top Rated' data={topRated} />
+        </ScrollView>
+      )}
     </View>
   );
 }
