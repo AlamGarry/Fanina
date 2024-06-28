@@ -50,7 +50,7 @@ export default function HomeScreen() {
   };
 
   return (
-    <View className='flex-1 bg-stone-900'>
+    <View className='flex-1 bg-slate-600'>
       {/* logo */}
       <SafeAreaView className='mt-2'>
         <StatusBar style='light' />
@@ -59,9 +59,6 @@ export default function HomeScreen() {
             <Ionicons name='heart' size={30} color='white' />
           </TouchableOpacity>
 
-          <Text className='text-white text-3xl font-bold'>
-            <Text style={styles.text}>MFlix</Text>
-          </Text>
           <TouchableOpacity onPress={() => navigation.navigate('Search')}>
             <Ionicons name='search-outline' size={30} color='white' />
           </TouchableOpacity>

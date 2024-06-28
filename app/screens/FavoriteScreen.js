@@ -53,7 +53,7 @@ export default function FavoriteScreen(title, data, id) {
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
-      className='bg-neutral-800 flex-1'
+      className='bg-slate-600 flex-1'
     >
       <SafeAreaView className=' z-20 w-full flex-row justify-between items-center px-4 mt-2 my-3'>
         <View>
