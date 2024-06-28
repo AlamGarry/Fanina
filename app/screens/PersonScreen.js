@@ -28,10 +28,11 @@ export default function PersonScreen() {
   const navigation = useNavigation();
   const [personMovies, setPersonMovies] = useState([]);
   const [person, setPerson] = useState({});
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(load ? 1 : 0);
+  var load;
 
   useEffect(() => {
-    setLoading(true);
+    setLoading(1);
     // console.log('person: ', item);
     getPersonDetails(item.id);
     getPersonMovies(item.id);
@@ -41,7 +42,7 @@ export default function PersonScreen() {
     const data = await fetchPersonDetails(id);
     // console.log('got person details: ', data);
     if (data) setPerson(data);
-    setLoading(false);
+    setLoading(0);
   };
 
   const getPersonMovies = async (id) => {
@@ -64,13 +65,13 @@ export default function PersonScreen() {
         >
           <Ionicons name='chevron-back' size={28} color='white' />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => toggleFavorite(!isFavorite)}>
+        {/* <TouchableOpacity onPress={() => toggleFavorite(!isFavorite)}>
           <Ionicons
             name='heart'
             size={35}
             color={isFavorite ? theme.favorite : 'white'}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </SafeAreaView>
 
       {/* person details */}

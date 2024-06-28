@@ -18,7 +18,8 @@ export default function HomeScreen() {
   const [trending, setTrending] = useState([]);
   const [upcoming, setUpcoming] = useState([]);
   const [topRated, setTopRated] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(load ? 1 : 0);
+  var load;
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -31,21 +32,21 @@ export default function HomeScreen() {
     const data = await fetchTrendingMovies();
     // console.log('got trending movies: ', data);
     if (data && data.results) setTrending(data.results);
-    setLoading(false);
+    setLoading(0);
   };
 
   const getUpcomingMovies = async () => {
     const data = await fetchUpcomingMovies();
     // console.log('got trending movies: ', data);
     if (data && data.results) setUpcoming(data.results);
-    setLoading(false);
+    setLoading(0);
   };
 
   const getTopRatedMovies = async () => {
     const data = await fetchTopRatedMovies();
     // console.log('got trending movies: ', data);
     if (data && data.results) setTopRated(data.results);
-    setLoading(false);
+    setLoading(0);
   };
 
   return (
@@ -54,7 +55,10 @@ export default function HomeScreen() {
       <SafeAreaView className='mt-2'>
         <StatusBar style='light' />
         <View className='flex-row justify-between items-center mx-4'>
-          <Ionicons name='menu' size={30} color='white' />
+          <TouchableOpacity onPress={() => navigation.navigate('Favorite')}>
+            <Ionicons name='menu' size={30} color='white' />
+          </TouchableOpacity>
+
           <Text className='text-white text-3xl font-bold'>
             <Text style={styles.text}>MFlix</Text>
           </Text>

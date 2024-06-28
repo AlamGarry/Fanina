@@ -3,8 +3,6 @@ import React from 'react';
 import { fallbackMoviePoster, fallbackPerson, image185 } from '../api/moviedb';
 
 export default function Cast({ cast, navigation }) {
-  const personName = 'Keanu Reeves';
-  const characterName = 'John Wick';
   return (
     <View className='my-6'>
       <Text className='text-white text-lg mx-4 mb-5'>Top Cast</Text>

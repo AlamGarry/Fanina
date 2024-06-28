@@ -21,40 +21,25 @@ const { width, height } = Dimensions.get('window');
 export default function SearchScreen() {
   const navigation = useNavigation();
   const [results, setResults] = useState([]);
-  let movieName = 'Super Power Like Mushroom';
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(load ? 1 : 0);
+  var load;
   const handleSearch = (value) => {
     if (value && value.length > 2) {
-      setLoading(true);
+      setLoading(1);
       searchMovies({
         query: value,
         include_adult: 'false',
         language: 'en-US',
         page: '1',
       }).then((data) => {
-        setLoading(false);
+        setLoading(0);
         // console.log('got movies: ', data);
         if (data && data.results) setResults(data.results);
       });
     } else {
-      setLoading(false);
+      setLoading(0);
       setResults([]);
     }
-    // if (value && value.length > 2) {
-    //   setLoading(true);
-    //   searchMovies({
-    //     query: value,
-    //     include_adult: 'false',
-    //     language: 'en-US',
-    //     page: 1,
-    //   }).then((data) => {
-    //     setLoading(false);
-    //     console.log('got movies: ', data);
-    //   });
-    // } else {
-    //   setLoading(false);
-    //   setResults([]);
-    // }
   };
   const handleTextDebounce = useCallback(debounce(handleSearch, 400), []);
 

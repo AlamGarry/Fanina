@@ -31,12 +31,13 @@ export default function MovieScreen() {
   const [isFavorite, toggleFavorite] = useState(false);
   const [cast, setCast] = useState([]);
   const [similarMovies, setSimilarMovies] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(load ? 1 : 0);
+  var load;
   const [movie, setMovie] = useState({});
 
   useEffect(() => {
     // console.log('itemid: ', item.id);
-    setLoading(true);
+    setLoading(1);
     getMovieDetails(item.id);
     getMovieCredits(item.id);
     getSimilarMovies(item.id);
@@ -46,7 +47,7 @@ export default function MovieScreen() {
     const data = await fetchMovieDetails(id);
     // console.log('got movie details: ', data);
     if (data) setMovie(data);
-    setLoading(false);
+    setLoading(0);
   };
 
   const getMovieCredits = async (id) => {
@@ -90,7 +91,7 @@ export default function MovieScreen() {
         {loading ? (
           <Loading />
         ) : (
-          <View>
+          <View className='flex-1'>
             <Image
               //   source={require('../../assets/test.jpg')}
               source={{
@@ -103,7 +104,7 @@ export default function MovieScreen() {
               style={{ width, height: height * 0.4 }}
               start={{ x: 0.5, y: 0 }}
               end={{ x: 0.5, y: 1 }}
-              className='absolute bottom-0'
+              className='absolute -bottom-1'
             />
           </View>
         )}
