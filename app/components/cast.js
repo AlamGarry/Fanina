@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
 import React from 'react';
-import { fallbackMoviePoster, fallbackPerson, image185 } from '../api/moviedb';
+import { fallbackPerson, image185 } from '../api/moviedb';
 
 export default function Cast({ cast, navigation }) {
   return (

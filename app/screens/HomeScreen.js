@@ -56,7 +56,7 @@ export default function HomeScreen() {
         <StatusBar style='light' />
         <View className='flex-row justify-between items-center mx-4'>
           <TouchableOpacity onPress={() => navigation.navigate('Favorite')}>
-            <Ionicons name='menu' size={30} color='white' />
+            <Ionicons name='heart' size={30} color='white' />
           </TouchableOpacity>
 
           <Text className='text-white text-3xl font-bold'>

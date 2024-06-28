@@ -21,17 +21,20 @@ import {
   fetchMovieDetails,
   fetchSimilarMovies,
   image500,
+  savedMovie,
 } from '../api/moviedb';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width, height } = Dimensions.get('window');
 
-export default function MovieScreen() {
+export default function MovieScreen(rout) {
   const { params: item } = useRoute();
   const navigation = useNavigation();
-  const [isFavorite, toggleFavorite] = useState(false);
+  const [main, setMain] = useState([]);
   const [cast, setCast] = useState([]);
   const [similarMovies, setSimilarMovies] = useState([]);
   const [loading, setLoading] = useState(load ? 1 : 0);
+  const [isFavorite, toggleFavorite] = useState(false);
   var load;
   const [movie, setMovie] = useState({});
 
@@ -41,7 +44,15 @@ export default function MovieScreen() {
     getMovieDetails(item.id);
     getMovieCredits(item.id);
     getSimilarMovies(item.id);
+    // getFavorite(item.id);
   }, [item]);
+
+  // const getFavorite = async (id) => {
+  //   const data = await fetchMovieCredits(id);
+  //   console.log('got movie details: ', data);
+  //   // if (data) setMain(data);
+  //   // setLoading(0);
+  // };
 
   const getMovieDetails = async (id) => {
     const data = await fetchMovieDetails(id);
@@ -52,7 +63,7 @@ export default function MovieScreen() {
 
   const getMovieCredits = async (id) => {
     const data = await fetchMovieCredits(id);
-    console.log('got credits: ', data);
+    // console.log('got credits: ', data);
     if (data && data.cast) setCast(data.cast);
   };
 
@@ -62,7 +73,65 @@ export default function MovieScreen() {
     if (data && data.results) setSimilarMovies(data.results);
   };
 
-  let movieName = 'Super Power Like Mushroom';
+  // function buat tambahin movie ke saved movie
+
+  const toggleFavoriteandSave = async () => {
+    try {
+      const savedMovies = await AsyncStorage.getItem('savedMovies');
+      let savedMoviesArray = savedMovies ? JSON.parse(savedMovies) : [];
+      console.log('check movie save');
+
+      const isMovieSaved = savedMoviesArray.some(
+        (savedMovie) => savedMovie.id === item.id
+      );
+      console.log('Check if movie save in saved list');
+
+      if (!isMovieSaved) {
+        // If movie is not saved, add it to the saved list
+        savedMoviesArray.push(movie);
+        await AsyncStorage.setItem(
+          'savedMovies',
+          JSON.stringify(savedMoviesArray)
+        );
+        toggleFavorite(true);
+        console.log('Movie is added to the list of saved movies');
+      } else {
+        // If movie is already saved, remove it from the list
+        const updatedSavedMoviesArray = savedMoviesArray.filter(
+          (savedMovie) => savedMovie.id !== item.id
+        );
+        await AsyncStorage.setItem(
+          'savedMovies',
+          JSON.stringify(updatedSavedMoviesArray)
+        );
+        toggleFavorite(false);
+        console.log('Movie is removed from the list of saved movies');
+      }
+    } catch (error) {
+      console.log('Error Saving Movie', error);
+    }
+  };
+  useEffect(() => {
+    // Load savd movies from AsyncStorage when the component mounts
+    const loadSavedMovies = async () => {
+      try {
+        const savedMovies = await AsyncStorage.getItem('savedMovies');
+        const savedMoviesArray = savedMovies ? JSON.parse(savedMovies) : [];
+
+        // Check if the movie is already in the saved list
+        const isMovieSaved = savedMoviesArray.some(
+          (savedMovie) => savedMovie.id === item.id
+        );
+
+        toggleFavorite(isMovieSaved);
+        console.log('Check if the current movie is in the saved list');
+      } catch (error) {
+        console.log('Error Loading Saved Movies', error);
+      }
+    };
+
+    loadSavedMovies();
+  }, [item.id]);
 
   return (
     <ScrollView
@@ -80,7 +149,11 @@ export default function MovieScreen() {
           >
             <Ionicons name='chevron-back' size={28} color='white' />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => toggleFavorite(!isFavorite)}>
+          <TouchableOpacity
+            onPress={() => {
+              toggleFavoriteandSave();
+            }}
+          >
             <Ionicons
               name='heart'
               size={35}
